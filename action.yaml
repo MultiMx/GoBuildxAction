@@ -1,0 +1,19 @@
+name: Multi Platform Go Build Action
+description: >
+  build multiple go arches in one time
+inputs:
+  name:
+    description: 'output name'
+    required: true
+  args:
+    description: 'go build extra args'
+    required: false
+  platform:
+    description: 'target platforms'
+    required: true
+  target:
+    description: 'build target dir'
+    required: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
