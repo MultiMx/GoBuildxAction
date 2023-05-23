@@ -2,13 +2,19 @@ package tools
 
 import (
 	"fmt"
-	"os/exec"
+	"os"
 	"strings"
 )
 
 func SetOutput(name, value string) {
 	value = strings.ReplaceAll(value, "\"", `\"`)
-	e := exec.Command("/bin/sh", "-c", fmt.Sprintf("echo \"%s=%s\" >> $GITHUB_OUTPUT", name, value)).Run()
+	file, e := os.OpenFile(os.Getenv("GITHUB_OUTPUT"), os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
+	if e != nil {
+		panic(e)
+	}
+	defer file.Close()
+
+	_, e = file.WriteString(fmt.Sprintf("%s=%s\n", name, value))
 	if e != nil {
 		panic(e)
 	}
