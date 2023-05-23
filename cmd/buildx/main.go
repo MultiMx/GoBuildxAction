@@ -14,5 +14,5 @@ func main() {
 		global.Config.Args,
 		global.Config.Target, arches,
 	)
-	tools.SetOutput("commands", strings.Join(builder.Commands(), "\n"))
+	tools.SetOutput("commands", strings.Join(builder.Commands(), " && "))
 }
