@@ -3,9 +3,12 @@ package goBuild
 import (
 	"fmt"
 	"log"
-	"os"
 	"strings"
 )
+
+func ArgsFromString(args string) []string {
+	return strings.Split(args, " ")
+}
 
 type Arch struct {
 	OS   string
@@ -13,8 +16,7 @@ type Arch struct {
 }
 
 func (a Arch) Env() []string {
-	env := os.Environ()
-	return append(env, "GOOS="+a.OS, "GOARCH=", a.ARCH)
+	return []string{"GOOS=" + a.OS, "GOARCH=" + a.ARCH}
 }
 
 func (a Arch) OutputArgs(name string) []string {
@@ -49,13 +51,11 @@ type MultiPlatformBuilder struct {
 	target string
 }
 
-func (a MultiPlatformBuilder) Build() {
-	var e error
-	for _, arch := range a.arches {
-		e = Execute(arch.Env(), append(a.args, append(arch.OutputArgs(a.name), a.target)...)...)
-		if e != nil {
-			log.Fatalf("arch %s build failed: %v", arch, e)
-		}
-		log.Printf("arch %s build success", arch)
+func (a MultiPlatformBuilder) Commands() []string {
+	var commands = make([]string, len(a.arches))
+	for i, arch := range a.arches {
+		args := append(arch.Env(), append([]string{"go build"}, append(a.args, append(arch.OutputArgs(a.name), a.target)...)...)...)
+		commands[i] = strings.Join(args, " ")
 	}
+	return commands
 }

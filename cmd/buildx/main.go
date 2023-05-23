@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/MultiMx/GoBuildxAction/internal/global"
 	"github.com/MultiMx/GoBuildxAction/internal/pkg/goBuild"
+	"github.com/MultiMx/GoBuildxAction/tools"
 	"strings"
 )
 
@@ -13,5 +14,5 @@ func main() {
 		global.Config.Args,
 		global.Config.Target, arches,
 	)
-	builder.Build()
+	tools.SetOutput("commands", strings.Join(builder.Commands(), "\n"))
 }
