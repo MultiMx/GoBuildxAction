@@ -2,7 +2,7 @@
 
 Go self-hosted 多架构构建辅助 action
 
-1. Dockerfile
+## 一、Dockerfile
 
 使用 `ARG TARGETOS` 和 `ARG TARGETARCH` 对应 `GOOS` 和 `GOARCH`，动态复制编译结果
 
@@ -27,7 +27,7 @@ ENTRYPOINT [ "/usr/bin/runner" ]
 
 ```
 
-2. Action
+## 二、Action
 
 ```yaml
       - name: Get Docker Image Url
